@@ -1,8 +1,13 @@
-name: CI - build and test
+name: CI - build, test, and publish website
 
 on:
   push:
     branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -17,5 +22,13 @@ jobs:
           distribution: temurin
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build and test
-        run: ./gradlew build test
+      - name: Build, test, and generate Javadoc
+        run: ./gradlew build test javadoc
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/docs/javadoc
+      - name: Deploy website
+        uses: actions/deploy-pages@v4
