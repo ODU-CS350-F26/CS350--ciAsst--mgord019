@@ -2,7 +2,7 @@ name: CI - build, test, and publish website
 
 on:
   push:
-    branches: [main]
+    branches: [gh-pages]
 
 permissions:
   contents: read
